@@ -1,4 +1,9 @@
 {% extends 'schema.html' %}
 {% block content %}
 <h1>Сообщения:</h1>
+{% for post in all_posts %}
+<div class="alert alert-info" role="alert">
+    {{post[1]}} Пользователь: '{{post[0]}}' написал '{{post[2]}}'
+  </div>
+{% endfor %}
 {% endblock %}
