@@ -1,0 +1,20 @@
+{% extends 'schema.html' %}
+{% block content %}
+<form method="POST">
+    <div class="form-group">
+      <label for="username">Имя пользователя</label>
+      <input type="text" class="form-control w-25 p-3"  name="username"  placeholder="Введите имя пользователя">
+      
+    </div>
+    <div class="form-group">
+      <label for="password">Пароль</label>
+      <input type="password" class="form-control w-25 p-3" name="password" placeholder="Пароль">
+    </div>
+     
+     <div class="form-group">
+        <label for="message">Сообщение</label>
+        <textarea class="form-control w-25 p-3" name="message" rows="3" placeholder="Ваше сообщение"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Подтвердить</button>
+  </form>
+{% endblock %}
