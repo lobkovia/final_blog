@@ -34,6 +34,8 @@ def register():
                 check_username = cur.fetchone()
                 if check_username:
                     msg =  "Пользователь с таким именем уже существует"
+                    msg_type = 'danger'
+                    msg_head = 'Ошибка'
                 else:
                     cur.execute(f"INSERT INTO users(name, password) VALUES ('{user}','{passw}')")
                     con.commit()
