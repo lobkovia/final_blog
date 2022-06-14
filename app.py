@@ -1,3 +1,4 @@
+from types import NoneType
 from flask import Flask, render_template,request
 from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -55,22 +56,34 @@ def message():
             message = request.form['message']
             with sqlite3.connect("database.db") as con:
                 cur = con.cursor()
-                cur.execute(f"select password from users where name =='{user}'")
-                entered_passw = cur.fetchone()[0]
                 cur.execute(f"SELECT id FROM users WHERE name == '{user}'")
-                user_id = cur.fetchone()[0]
-                if check_password_hash(entered_passw,passw):
-                    current_time = datetime.now().strftime("%H:%M %d.%m.%Y")
-                    cur.execute(f"INSERT INTO posts(date,message,user_id) VALUES ('{current_time}','{message}',{user_id})")
-                    msg = "Сообщение успешно опубликовано"
+                user_id = cur.fetchone()
+                if user_id is None: 
+                    msg = "Пользователь не зарегистрирован"
+                    msg_type = 'danger'
+                    msg_head = 'Ошибка'
                 else:
-                    msg = "Неверный пароль"
+                    user_id = user_id[0]
+                    cur.execute(f"select password from users where name =='{user}'")
+                    entered_passw = cur.fetchone()[0]
+                    if check_password_hash(entered_passw,passw):
+                        current_time = datetime.now().strftime("%H:%M %d.%m.%Y")
+                        cur.execute(f"INSERT INTO posts(date,message,user_id) VALUES ('{current_time}','{message}',{user_id})")
+                        msg = "Сообщение успешно опубликовано"
+                        msg_type = 'success'
+                        msg_head = 'Успешно'
+                    else:
+                        msg = "Неверный пароль"
+                        msg_type = 'danger'
+                        msg_head = 'Ошибка'
                 con.commit()
         except Exception as e:
             con.rollback()
             msg = f"Произошла ошибка публикации сообщения, {e}"
+            msg_type = 'danger'
+            msg_head = 'Ошибка'
         finally:
-            return render_template("result.html",msg=msg)
+            return render_template("result.html", msg=msg, msg_type=msg_type, msg_head=msg_head)
             con.close()
     
     return render_template('message.html')

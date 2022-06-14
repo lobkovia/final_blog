@@ -1,7 +1,7 @@
 {% extends 'schema.html' %}
 {% block content %}
-<div class="alert alert-success" role="alert">
-    <h4 class="alert-heading">Успешно!</h4>
+<div class="alert alert-{{msg_type}}" role="alert">
+    <h4 class="alert-heading">{{msg_head}}</h4>
     <p>{{msg}}</p>
   </div>
 {% endblock %}
