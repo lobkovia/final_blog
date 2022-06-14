@@ -38,11 +38,15 @@ def register():
                     cur.execute(f"INSERT INTO users(name, password) VALUES ('{user}','{passw}')")
                     con.commit()
                     msg = "Регистрация успешна"
+                    msg_type = 'success'
+                    msg_head = 'Успешно'
         except Exception as e:
             con.rollback()
             msg = f"Произошла ошибка регистрации, {e}"
+            msg_type = 'danger'
+            msg_head = 'Ошибка'
         finally:
-            return render_template("result.html",msg=msg)
+            return render_template("result.html", msg=msg, msg_type=msg_type, msg_head=msg_head)
             con.close()
     else:
         return render_template("register.html")
